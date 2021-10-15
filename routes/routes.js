@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Mybooks = require("../models/myBooks.js");
 const wishBooks = require("../models/wishBooks.js");
-
+const auth = require("../middle/auth.js");
 const multer = require("multer");
 
 const storage = multer.diskStorage({
@@ -72,7 +72,7 @@ router.post("/mylivros", (req, res) => {
   }
 });
 //Edita um livro da sua biblioteca
-router.put("/mylivros/:id", (req, res) => {
+router.put("/mylivros/:id", auth, (req, res) => {
   var id = parseInt(req.params.id);
   var { nomeBook, autorBook, resume } = req.body;
 
@@ -112,7 +112,7 @@ router.put("/mylivros/:id", (req, res) => {
   }
 });
 //Delete um livro da sua biblioteca
-router.delete("/mylivros/:id", (req, res) => {
+router.delete("/mylivros/:id", auth, (req, res) => {
   var id = req.params.id;
 
   Mybooks.destroy({ where: { id: id } })
@@ -181,7 +181,7 @@ router.post("/wish-list", (req, res) => {
     res.json({ erro: "Informações invalidas ou null." });
   }
 });
-router.put("/wish-list/:id", (req, res) => {
+router.put("/wish-list/:id", auth, (req, res) => {
   var id = parseInt(req.params.id);
   var { nomeBook, autorBook, resume } = req.body;
 
@@ -222,7 +222,7 @@ router.put("/wish-list/:id", (req, res) => {
     res.json({ erro: "Id invalido!" });
   }
 });
-router.delete("/wish-list/:id", (req, res) => {
+router.delete("/wish-list/:id", auth, (req, res) => {
   var id = req.params.id;
 
   wishBooks
